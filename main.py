@@ -181,11 +181,11 @@ class Main(tk.Frame):
                                    foreground="white")
         self.button_abrir.place(x=190, y=620)
 
-        self.button_baixar = Button(self.frame_direito, text="Baixar", width=12, height=1, background="#1F8A0D",
-                                    relief="flat", command=self.download_pdf,
-                                    cursor='hand2', font="bold",
-                                    foreground="white")
-        self.button_baixar.place(x=330, y=620)
+        self.button_local = Button(self.frame_direito, text="Local", width=12, height=1, background="#1F8A0D",
+                                   relief="flat", command=self.open_folder_in_file_explorer,
+                                   cursor='hand2', font="bold",
+                                   foreground="white")
+        self.button_local.place(x=330, y=620)
 
         self.in_image = ImageTk.PhotoImage(Image.open("Imagens/icon_zoom_in.png"))
         self.button_zoom_in = Button(self.frame_direito, image=self.in_image, bg="white", relief="flat", cursor='hand2',
@@ -196,6 +196,11 @@ class Main(tk.Frame):
         self.button_zoom_out = Button(self.frame_direito, image=self.out_image, bg="white", relief="flat",
                                       cursor='hand2', command=self.zoom_out)
         self.button_zoom_out.place(x=500, y=165)
+
+        self.out_download = ImageTk.PhotoImage(Image.open("Imagens/icon_download.png"))
+        self.button_download = Button(self.frame_direito, image=self.out_download, bg="white", relief="flat",
+                                      cursor='hand2', command=self.download_pdf)
+        self.button_download.place(x=500, y=205)
 
         self.canvas.bind("<ButtonPress-1>", self.on_canvas_press)
         self.canvas.bind("<B1-Motion>", self.on_canvas_motion)
@@ -239,6 +244,10 @@ class Main(tk.Frame):
                                                      title="Save PDF As")  # Ask user for save location
             if save_path:
                 shutil.copyfile(file_path, save_path)
+
+    def open_folder_in_file_explorer(self):
+        if self.current_folder:
+            os.startfile(self.current_folder)
 
     def search_folders(self, event):
         query = self.entry_search.get().lower()
